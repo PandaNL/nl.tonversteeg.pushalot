@@ -1,0 +1,14 @@
+{
+	"settings": {
+		"title": "Provide Pushalot settings.",
+		"intro": "Provide all your settings for the Pushalot service below.",
+		"tutorial": "Go to Pushalot.com to create an Api token key for homey",
+		"error": "An error has occurred.",
+      	"pushalotToken": "Token API key",
+      	"savePushalot": "Save",
+		"savedPushalot": "Saved",
+		"notsavedPushalot": "Failed...",
+		"clearPushalot": "Clear",
+      	"legend": "Pushalot Account"
+  }
+}

@@ -1,0 +1,57 @@
+{
+    "id": "nl.tonversteeg.pushalot",
+    "name": {
+        "en": "Pushalot Notifications"
+    },
+    "version": "0.0.1",
+    "compatibility": "0.x || 1.x",
+    "author": {
+        "name": "Ton Versteeg",
+        "email": "tonversteeg1@gmail.com"
+    },
+    "images": {
+      "large": "./assets/images/large.jpg",
+      "small": "./assets/images/small.jpg"
+    },
+    "category": "internet",
+    "description": {
+    "en": "Pushalot notifications for Homey",
+    "nl": "Pushalot notificatie voor Homey"
+    },
+    "permissions": ["homey:manager:ledring"
+    ],
+    "flow": {
+        "actions": [
+        {
+            "id": "pushalotSend",
+            "title": {
+                "en": "Pushalot notification",
+                "nl": "Pushalot notificatie"
+            },
+            "args": [
+              {
+                  "name":"message",
+                  "type":"text",
+                  "placeholder":{
+                     "en":"Message",
+                     "nl":"Bericht"
+                  }
+               },
+               {
+                "name": "message_type",
+                "type": "dropdown",
+                "values": [
+                  { "id": "Normal", "label": { "en": "Normal"}},
+                  { "id": "Important", "label": { "en": "Important"}},
+                  { "id": "Silent", "label": { "en": "Silent"}}
+                ],
+                "placeholder": { "en": "Type", "nl": "Type" }
+              }
+            ]
+        }
+      ]
+    },
+    "dependencies": {
+    		"Pushalot-node": "*"
+    }
+}

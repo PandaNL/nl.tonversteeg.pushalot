@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <script type="text/javascript" src="/manager/webserver/assets/js/jquery.js"></script>
+</head>
+<body>
+
+<h1 data-i18n="settings.title"></h1>
+<p data-i18n="settings.intro"></p>
+<p data-i18n="settings.tutorial"></p>
+
+<fieldset>
+    <legend data-i18n="settings.legend"></legend>
+
+    <style>
+      .form_label {
+        width: 100px !important;
+        display: block !important;
+        margin-right: 20px;
+      }
+
+      .form_input {
+        width: 250px !important;
+        display: block !important;
+      }
+
+      select {
+        padding: .5em .75em;
+        vertical-align: middle;
+        font-size: 12px;
+        font-family: inherit;
+        font-weight: inherit;
+        border: 1px solid #aaa;
+        border-radius: 2px;
+        width:270px !important;
+      }
+
+      button {
+        margin-right:15px;
+      }
+    </style>
+
+
+    <div class="field row">
+        <label class="form_label"  for="pushalot_token" data-i18n="settings.pushalotToken"></label>
+        <input class="form_input" id="pushalot_token" type="text" value="" />
+    </div>
+    <input type="checkbox" id="pushalot_ledring" value="pushalot_ledring"> <label for="pushalot_ledring">Light led ring upon sending notification?</label>
+    <br>
+    <br>
+    <button id="savePushalot" class="left" data-i18n="settings.savePushalot" onclick="savePushalot()"></button>
+    <button id="clearPushalot" class="left" data-i18n="settings.clearPushalot" onclick="clearPushalotSettings()"></button>
+
+</fieldset>
+
+
+
+<script type="text/javascript">
+
+    var currentPushalotToken;
+
+    // Initialize Homey
+    function onHomeyReady() {
+
+
+      // Ready
+      Homey.ready();
+
+      // Get saved account settings
+      Homey.get("pushalotaccount", function (err, value) {
+        if (value != null) {
+
+			// Set current accounts
+			currentPushalotToken = value;
+
+         	document.getElementById('pushalot_token').value = currentPushalotToken['token'];
+          if(currentPushalotToken['ledring'] == true) {
+            document.getElementById('pushalot_ledring').checked = true;
+          } else {
+            document.getElementById('pushalot_ledring').checked = false;
+          }
+        } else {
+        }
+
+      });
+
+
+
+    }
+
+
+    function clearPushalotSettings() {
+
+      document.getElementById('pushalot_token').value = '';
+
+    }
+
+
+    // Save updated settings
+    function savePushalot() {
+
+
+		// Build array
+        currentPushalotToken = {
+          'token': document.getElementById('pushalot_token').value,
+          'ledring': document.getElementById('pushalot_ledring').checked
+        };
+
+        // Show clear
+        $('#clearPushalot').css('display', 'block');
+
+
+      // Update settings
+      Homey.set("pushalotaccount", currentPushalotToken, function (err) {
+          if (err) {
+              // Display failed registration
+              document.getElementById('savePushalot').style['background-color'] = 'lightcoral';
+              document.getElementById('savePushalot').style['color'] = 'black';
+              document.getElementById('savePushalot').innerHTML = __("settings.notsavedPushalot");
+          }
+      });
+
+      // Display successful registration
+      document.getElementById('savePushalot').style['background-color'] = 'lightgreen';
+      document.getElementById('savePushalot').style['color'] = 'white';
+      document.getElementById('savePushalot').innerHTML = __("settings.savePushalot");
+
+      setTimeout(function () {
+          // Reset button
+          document.getElementById('savePushalot').style['background-color'] = '';
+          document.getElementById('savePushalot').style['color'] = 'black';
+          document.getElementById('savePushalot').innerHTML = __("settings.savePushalot");
+      }, 3000);
+
+      onHomeyReady();
+    }
+</script>
+
+</body>
+</html>
