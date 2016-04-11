@@ -41,9 +41,9 @@
                 "name": "message_type",
                 "type": "dropdown",
                 "values": [
-                  { "id": "Normal", "label": { "en": "Normal"}},
-                  { "id": "Important", "label": { "en": "Important"}},
-                  { "id": "Silent", "label": { "en": "Silent"}}
+                  { "id": "Normal", "label": { "en": "Normal", "nl": "Normaal"}},
+                  { "id": "Important", "label": { "en": "Important", "nl": "Belangrijk"}},
+                  { "id": "Silent", "label": { "en": "Silent", "nl": "Stil"}}
                 ],
                 "placeholder": { "en": "Type", "nl": "Type" }
               }

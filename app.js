@@ -2,7 +2,7 @@
 
 var Pushalot = require('pushalot-node');
 var account = [];
-var pushalotToken = null;
+var pushalotToken;
 var ledringPreference = false;
 
 // Get accounts from homey settings page.
@@ -19,10 +19,10 @@ function buildPushalotArray() {
 }
 
 Homey.manager('flow').on('action.pushalotSend', function( callback, args ){
-		var tempToken = pushalotToken;
+		if( typeof pushalotToken == 'undefined' || pushalotToken == '') return callback( new Error("Pushalot token not configured under settings!") );
 		var pMessage = args.message;
 		var pMessage_type = args.message_type;
-		pushalotSend ( tempToken, pMessage, pMessage_type);
+		pushalotSend ( pushalotToken, pMessage, pMessage_type);
     callback( null, true ); // we've fired successfully
 });
 
@@ -35,6 +35,12 @@ function pushalotSend ( pToken , pMessage, pMessage_type) {
 			Type = {IsImportant: true};
 			break;
 		case 'Silent':
+			Type = {IsSilent: true};
+			break;
+		case 'Belangrijk':
+			Type = {IsImportant: true};
+			break;
+		case 'Stil':
 			Type = {IsSilent: true};
 			break;
 	}
