@@ -18,9 +18,23 @@ function buildPushalotArray() {
 	}
 }
 
+function createInsightlog() {
+	Homey.manager('insights').createLog( 'pushalot_sendNotifications', {
+    label: {
+        en: 'Send Notifications'
+    },
+    type: 'number',
+    units: {
+        en: 'notifications'
+    },
+    decimals: 0
+});
+}
+
 Homey.manager('flow').on('action.pushalotSend', function( callback, args ){
 		if( typeof pushalotToken == 'undefined' || pushalotToken == '') return callback( new Error("Pushalot token not configured under settings!") );
 		var pMessage = args.message;
+		if( typeof pMessage == 'undefined' || pMessage == '' || pMessage == null) return callback( new Error("Message cannot be blank!") );
 		var pMessage_type = args.message_type;
 		pushalotSend ( pushalotToken, pMessage, pMessage_type);
     callback( null, true ); // we've fired successfully
@@ -53,6 +67,10 @@ function pushalotSend ( pToken , pMessage, pMessage_type) {
 		if (ledringPreference == true){
 			LedAnimate("green", 3000);
 		}
+		//Add send notification to Insights
+		Homey.manager('insights').createEntry( 'pushalot_sendNotifications', 1, new Date(), function(err, success){
+        if( err ) return Homey.error(err);
+    });
 	})
 	.on('error', function (code , res ) {
 	  //
@@ -95,6 +113,8 @@ var self = module.exports = {
 
 		// Start building Pushalot accounts array
 		buildPushalotArray();
+		// Create insight log
+		createInsightlog();
 
 		Homey.manager('settings').on( 'set', function(settingname){
 
